@@ -27,13 +27,11 @@ def create_view(request):
     return render(request,template,context)
 
 def detail_slug_view(request,slug=None):
-    product = Product.object.get(slug=slug)
+    # product = Product.object.get(slug=slug)
     try:
         product = get_object_or_404(Product,slug=slug)
     except:
         product = Product.objects.filter(slug=slug).order_by('-title').first()
-    # product = get_object_or_404(Product, slug=slug)
-    # product = 1
     template="detail_view.html"
     context={
         'object':product,
@@ -47,16 +45,6 @@ def detail_view(request,object_id=None):
         'object':product,
         }
     return render(request,template,context)
-    # if object_id is not None:
-    #     product = get_object_or_404(Product, id=object_id)
-    #     # try:
-    #     #     product = Product.objects.get(id=object_id)
-    #     # except:
-    #     #     product = None
-    #
-    # else:
-    #     raise Http404
-
 def list_view(request):
     queryset = Product.objects.all()
     template="list_view.html"
