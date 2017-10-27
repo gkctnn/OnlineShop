@@ -4,8 +4,23 @@ from .models import Product
 from .forms import ProductAddForm,ProductModelForm
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-from digitalmarket.mixins import MultiSlugMixin
+from digitalmarket.mixins import MultiSlugMixin,SubmitBtnMixin
+from django.views.generic.edit import CreateView,UpdateView
 # Create your views here.
+
+class ProductCreateView(SubmitBtnMixin,CreateView):
+    model = Product
+    template_name="form.html"
+    form_class = ProductModelForm
+    success_url = "/products/add/"
+    submit_btn = "Add Product"
+
+class ProductUpdateView(SubmitBtnMixin,MultiSlugMixin,UpdateView):
+    model = Product
+    template_name="form.html"
+    form_class = ProductModelForm
+    success_url = "/products/"
+    submit_btn = "Update Product"
 
 class ProductDetailView(MultiSlugMixin,DetailView):
     model = Product
