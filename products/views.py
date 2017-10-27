@@ -4,31 +4,14 @@ from .models import Product
 from .forms import ProductAddForm,ProductModelForm
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
+from digitalmarket.mixins import MultiSlugMixin
 # Create your views here.
 
-class ProductDetailView(DetailView):
+class ProductDetailView(MultiSlugMixin,DetailView):
     model = Product
-
-    def get_object(self,*args,**kwargs):
-        slug = self.kwargs.get('slug')
-        ModelClass = self.model
-        if slug is not None:
-            try:
-                obj = get_object_or_404(Product,slug=slug)
-            except ModelClass.MultipleObjectsReturned:
-                obj = ModelClass.objects.filter(slug=slug).order_by('-title').first()
-        else:
-            obj = super(ProductDetailView,self).get_object(*args,**kwargs)
-        return obj
 
 class ProductListView(ListView):
     model = Product
-    # template_name ="list_view.html"
-    #
-    # def get_context_data(self,**kwargs):
-    #     context = super(ProductListView,self).get_context_data(**kwargs)
-    #     context["queryset"] = self.get_queryset()
-    #     return context
 
     def get_queryset(self,*args,**kwargs):
         qs = super(ProductListView,self).get_queryset(**kwargs)
