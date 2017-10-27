@@ -3,7 +3,11 @@ from django.http import Http404
 from .models import Product
 from .forms import ProductAddForm,ProductModelForm
 from django.views.generic.list import ListView
+from django.views.generic.detail import DetailView
 # Create your views here.
+
+class ProductDetailView(DetailView):
+    model = Product
 
 class ProductListView(ListView):
     model = Product
@@ -38,7 +42,7 @@ def update_view(request,object_id=None):
         instance = form.save(commit=False)
         # instance.sale_price = instance.price
         instance.save()
-    template="form_view.html"
+    template="form.html"
     context={
         'object':product,
         'form':form,
