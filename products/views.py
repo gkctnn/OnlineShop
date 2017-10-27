@@ -2,7 +2,21 @@ from django.shortcuts import render,get_object_or_404
 from django.http import Http404
 from .models import Product
 from .forms import ProductAddForm,ProductModelForm
+from django.views.generic.list import ListView
 # Create your views here.
+
+class ProductListView(ListView):
+    model = Product
+    # template_name ="list_view.html"
+    #
+    # def get_context_data(self,**kwargs):
+    #     context = super(ProductListView,self).get_context_data(**kwargs)
+    #     context["queryset"] = self.get_queryset()
+    #     return context
+
+    def get_queryset(self,*args,**kwargs):
+        qs = super(ProductListView,self).get_queryset(**kwargs)
+        return qs.filter(title__icontains="deneme")
 
 def create_view(request):
     form = ProductModelForm(request.POST or None)

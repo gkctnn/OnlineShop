@@ -8,7 +8,7 @@ class Product(models.Model):
     description = models.TextField(blank=True, null=True)
     price = models.DecimalField(decimal_places=2, max_digits=30)
     sale_price = models.DecimalField(max_digits=100,decimal_places=2,blank=True, null=True)
-    def __unicode__(self): #def __str__(self):
+    def __str__(self): #def __str__(self):
         return self.title
 
 def product_pre_save_reciever(sender,instance,*args,**kwargs):
