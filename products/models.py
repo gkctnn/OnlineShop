@@ -14,10 +14,12 @@ class Product(models.Model):
 def product_pre_save_reciever(sender,instance,*args,**kwargs):
     if not instance.slug:
         instance.slug=slugify(instance.title)
-product_pre_save_reciever(product_pre_save_reciever,sender=Product)
+
+pre_save.connect(product_pre_save_reciever,sender=Product)
 
 # def product_post_save_reciever(sender,instance,*args,**kwargs):
 #     if instance.slug != slugify(instance.title):
 #         instance.slug=slugify(instance.title)
 #         instance.save()
-# product_post_save_reciever(product_post_save_reciever,sender=Product)
+#
+# post__save.connect(product_post_save_reciever,sender=Product)
