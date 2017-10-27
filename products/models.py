@@ -1,5 +1,6 @@
 from django.db import models
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save,post_save
+from django.utils.text import slugify
 # Create your models here.
 class Product(models.Model):
     title = models.CharField(max_length=120)
@@ -10,24 +11,13 @@ class Product(models.Model):
     def __unicode__(self): #def __str__(self):
         return self.title
 
-	#
-	#
-	# active = models.BooleanField(default=True)
-	# categories = models.ManyToManyField('Category', blank=True)
-	# default = models.ForeignKey('Category', related_name='default_category', null=True, blank=True)
-    #
-	# objects = ProductManager()
+def product_pre_save_reciever(sender,instance,*args,**kwargs):
+    if not instance.slug:
+        instance.slug=slugify(instance.title)
+product_pre_save_reciever(product_pre_save_reciever,sender=Product)
 
-	# class Meta:
-	# 	ordering = ["-title"]
-
-
-
-	# def get_absolute_url(self):
-	# 	return reverse("product_detail", kwargs={"pk": self.pk})
-    #
-	# def get_image_url(self):
-	# 	img = self.productimage_set.first()
-	# 	if img:
-	# 		return img.image.url
-	# 	return img #None
+# def product_post_save_reciever(sender,instance,*args,**kwargs):
+#     if instance.slug != slugify(instance.title):
+#         instance.slug=slugify(instance.title)
+#         instance.save()
+# product_post_save_reciever(product_post_save_reciever,sender=Product)
