@@ -7,8 +7,6 @@ from .forms import ProductAddForm
 def create_view(request):
     # FORM
     form = ProductAddForm(request.POST or None)
-    # if request.method == 'POST':
-
     if form.is_valid():
         data = form.cleaned_data
         title = data.get('title')
@@ -27,10 +25,10 @@ def create_view(request):
     return render(request,template,context)
 
 def detail_slug_view(request,slug=None):
-    # product = Product.object.get(slug=slug)
+    product = Product.objects.get(slug=slug)
     try:
         product = get_object_or_404(Product,slug=slug)
-    except:
+    except Product.MultipleObjectsReturned:
         product = Product.objects.filter(slug=slug).order_by('-title').first()
     template="detail_view.html"
     context={
